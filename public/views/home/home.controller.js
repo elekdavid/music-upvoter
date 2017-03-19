@@ -46,8 +46,16 @@
         };
 
         vm.remove = function (music) {
+            if (!firebase.auth().currentUser) {
+                return;
+            }
+
+            if (firebase.auth().currentUser.uid !== music.creator) {
+                return;
+            }
+
             var confirm = $mdDialog.confirm()
-                .title('Bitzos hogy törölni akarod? A szavazotkat elveszíted a számra!')
+                .title('Biztos hogy törölni akarod? A szavazotkat elveszíted a számra!')
                 .ok('Igen, töröljük, szar a szám!')
                 .cancel('Nem, hagyjuk');
 
@@ -95,7 +103,7 @@
         };
 
         vm.getLink = function(music) {
-            var searchQuery = music.title.replace(" ", "+");
+            var searchQuery = music.title.replace(/\s/g, "+");
             return "https://www.youtube.com/results?search_query=" + searchQuery;
         };
 
