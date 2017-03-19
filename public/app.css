@@ -1,0 +1,17 @@
+.upvote-arrow {
+  font-size: 40px;
+}
+
+.upvote-value {
+  margin: 0;
+  text-align: center;
+  font-size: 24px;
+}
+
+.upvote-pos .upvote-value {
+  color: green;
+}
+
+.upvote-neg .upvote-value {
+  color: red;
+}

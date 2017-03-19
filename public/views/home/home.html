@@ -1,0 +1,21 @@
+<div layout="row">
+  <md-input-container flex="100">
+    <label>Zeneszám keresés</label>
+    <input type="text" ng-model="musicTitle">
+  </md-input-container>
+</div>
+
+<md-list>
+  <md-list-item class="md-1-line" ng-repeat="music in vm.musics">
+    <div layout="column"
+         ng-class="vm.upvoteClass(music)">
+      <i class="material-icons upvote-arrow upvote-arrow-up">&#xE316;</i>
+      <h4 class="upvote-value">{{music.upvote}}</h4>
+      <i class="material-icons upvote-arrow upvote-arrow-down">&#xE313;</i>
+    </div>
+    <img ng-src="https://cdn1.iconfinder.com/data/icons/google_jfk_icons_by_carlosjj/512/music.png" class="md-avatar" />
+    <div class="md-list-item-text">
+      <h3>{{music.title}}</h3>
+    </div>
+  </md-list-item>
+</md-list>
