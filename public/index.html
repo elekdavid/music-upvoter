@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Music Upvoter</title>
+    <title>Szeletelő szavazó</title>
 
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -10,11 +10,17 @@
 
     <link rel="stylesheet" href="app.css">
 
+    <base href="/">
   </head>
   <body ng-app="musicUpvoterApp" layout="column" layout-align="start stretch">
-  <div ui-view="navbar" ng-cloak></div>
-  <div layout="row" layout-align="center">
-    <div ui-view="content" flex="90"></div>
+
+  <div ng-show="!isAuthReady || !isMusicsLoaded" class="page-loader" ng-cloak>
+    <md-progress-circular md-diameter="96"></md-progress-circular>
+  </div>
+
+  <div ng-show="isAuthReady && isMusicsLoaded" ui-view="navbar" ng-cloak></div>
+  <div ng-show="isAuthReady && isMusicsLoaded" layout="row" layout-align="center" ng-cloak>
+    <div ui-view="content" flex="95" flex-gt-md="85"></div>
   </div>
 
 
@@ -27,12 +33,30 @@
   <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
   <script src="bower_components/angular-material/angular-material.js"></script>
 
+
+  <script src="bower_components/firebase/firebase.js"></script>
+  <script src="bower_components/angularfire/dist/angularfire.js"></script>
+
+  <!-- Angular Firebase -->
+
   <!-- Project scripts -->
   <script src="app.module.js"></script>
   <script src="app.state.js"></script>
   <script src="views/home/home.controller.js"></script>
   <script src="views/home/home.state.js"></script>
   <script src="views/navbar/navbar.controller.js"></script>
+
+  <script>
+      // Initialize Firebase
+      var config = {
+          apiKey: "AIzaSyCoLvXEWcPWLsxrEqsZXpY19ngYOE_IeMs",
+          authDomain: "music-upvoter.firebaseapp.com",
+          databaseURL: "https://music-upvoter.firebaseio.com",
+          storageBucket: "music-upvoter.appspot.com",
+          messagingSenderId: "735935493052"
+      };
+      firebase.initializeApp(config);
+  </script>
 
   </body>
 </html>

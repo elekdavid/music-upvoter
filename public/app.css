@@ -9,9 +9,37 @@
 }
 
 .upvote-pos .upvote-value {
-  color: green;
+  color: #558B2F;
 }
 
 .upvote-neg .upvote-value {
-  color: red;
+  color: #D32F2F;
+}
+
+.invisible,
+.upvote-user-neg .upvote-arrow-down,
+.upvote-user-pos .upvote-arrow-up {
+  color: rgba(0,0,0,0);
+  cursor: default!important;
+}
+
+.toolbar-image {
+  height: 80%;
+  border-radius: 100px;
+}
+
+.page-loader {
+  height: 100%;
+  display: block;
+  margin: auto;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.page-loader md-progress-circular {
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
 }

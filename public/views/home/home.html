@@ -1,19 +1,35 @@
+<p ng-show="!vm.isLoggedIn()">
+  <i class="material-icons">&#xE88E;</i>
+  Zeneszámok hozzáadásához vagy szavazáshoz jelentkezz be Facebookoddal.
+</p>
+
 <div layout="row">
   <md-input-container flex="100">
-    <label>Zeneszám keresés</label>
-    <input type="text" ng-model="musicTitle">
+    <label>Zeneszám keresés{{vm.isLoggedIn() ?  " / hozzáadás" : ""}}</label>
+    <input type="text" ng-model="vm.musicTitle">
   </md-input-container>
 </div>
 
+<div layout="row" layout-align="center" ng-show="vm.isLoggedIn() && filtered.length === 0 && vm.musicTitle.length > 0">
+  <md-button class="md-primary md-raised" ng-click="vm.addNew()">Zeneszám hozzáadása</md-button>
+</div>
+
 <md-list>
-  <md-list-item class="md-1-line" ng-repeat="music in vm.musics">
+  <md-list-item class="md-1-line" ng-repeat="music in vm.musics | filter:vm.musicTitle | orderBy:title:true | orderBy:vm.upvotesOfMusic:true as filtered">
     <div layout="column"
          ng-class="vm.upvoteClass(music)">
-      <i class="material-icons upvote-arrow upvote-arrow-up">&#xE316;</i>
-      <h4 class="upvote-value">{{music.upvote}}</h4>
-      <i class="material-icons upvote-arrow upvote-arrow-down">&#xE313;</i>
+      <i class="material-icons upvote-arrow upvote-arrow-up"
+         ng-click="vm.upvote(music, 1)"
+         ng-class="{clickable: vm.isLoggedIn(), invisible: !vm.isLoggedIn()}">&#xE316;</i>
+      <h4 class="upvote-value">{{vm.upvotesOfMusic(music)}}</h4>
+      <i class="material-icons upvote-arrow upvote-arrow-down"
+         ng-click="vm.upvote(music, -1)"
+         ng-class="{clickable: vm.isLoggedIn(), invisible: !vm.isLoggedIn()}">&#xE313;</i>
     </div>
-    <img ng-src="https://cdn1.iconfinder.com/data/icons/google_jfk_icons_by_carlosjj/512/music.png" class="md-avatar" />
+    <i class="material-icons delete-icon"
+       ng-click="vm.remove(music)"
+       ng-class="{clickable: vm.isLoggedIn(), invisible: !vm.isRemovable(music)}">&#xE872;</i>
+    <a ng-href="{{vm.getLink(music)}}" target="_blank"><img ng-src="https://cdn1.iconfinder.com/data/icons/google_jfk_icons_by_carlosjj/512/music.png" class="md-avatar" /></a>
     <div class="md-list-item-text">
       <h3>{{music.title}}</h3>
     </div>
