@@ -1,3 +1,7 @@
+html {
+  overflow-y: scroll;
+}
+
 .upvote-arrow {
   font-size: 40px;
 }
@@ -19,8 +23,8 @@
 .invisible,
 .upvote-user-neg .upvote-arrow-down,
 .upvote-user-pos .upvote-arrow-up {
-  color: rgba(0,0,0,0);
-  cursor: default!important;
+  color: rgba(0, 0, 0, 0);
+  cursor: default !important;
 }
 
 .toolbar-image {
@@ -41,5 +45,31 @@
 .page-loader md-progress-circular {
   margin: auto;
   position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+md-list-item.odd {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.all-list-element,
+.not-rated-list-element {
+  margin: 10px;
+}
+
+.not-rated-list-element .close-icon {
+  margin-top: 10px;
+}
+
+.spotify-container {
+  overflow: hidden;
+}
+
+.spotify-container iframe {
+  width: 60px;
+  transform: translate(-20px, -20px);
+  height: 60px;
 }

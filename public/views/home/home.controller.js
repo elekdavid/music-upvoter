@@ -5,19 +5,26 @@
         .module('musicUpvoterApp')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$scope', '$firebaseArray', "$mdDialog"];
+    HomeController.$inject = ['$scope', '$firebaseArray', "$mdDialog", "$timeout", "SpotifyService"];
 
-    function HomeController($scope, $firebaseArray, $mdDialog) {
+    function HomeController($scope, $firebaseArray, $mdDialog, $timeout, SpotifyService) {
         var vm = this;
         var ref;
+
+        var tracks = {};
 
         function init() {
             $scope.$parent.isMusicsLoaded = false;
             ref = firebase.database().ref().child("/musics");
 
             vm.musics = $firebaseArray(ref);
-            vm.musics.$loaded().then(function() {
+            vm.musics.$loaded().then(function () {
                 $scope.$parent.isMusicsLoaded = true;
+                angular.forEach(vm.musics, function (music) {
+                    SpotifyService.findTrack(music.title).then(function (track) {
+                        tracks[music.$id] = track;
+                    });
+                });
             });
         }
 
@@ -30,17 +37,25 @@
             var newMusicRef = ref.push();
             newMusicRef.set({
                 title: vm.musicTitle,
-                creator: firebase.auth().currentUser.uid
-            }).then(function() {
+                creator: firebase.auth().currentUser.uid,
+                createdAt: +new Date()
+            }).then(function () {
+
                 var path = newMusicRef.toString();
-                var id = path.split('/')[path.split('/').length-1];
-                var music = vm.musics.find(function(m) {
+                var id = path.split('/')[path.split('/').length - 1];
+                var music = vm.musics.find(function (m) {
                     return m.$id === id;
                 });
 
                 vm.upvote(music, 1);
 
                 vm.musicTitle = "";
+
+                SpotifyService.findTrack(music.title).then(function (track) {
+                    tracks[id] = track;
+                    $scope.$apply();
+                });
+
                 $scope.$apply();
             });
         };
@@ -59,15 +74,15 @@
                 .ok('Igen, töröljük, szar a szám!')
                 .cancel('Nem, hagyjuk');
 
-            $mdDialog.show(confirm).then(function() {
+            $mdDialog.show(confirm).then(function () {
                 vm.musics.$remove(music);
             });
 
         };
 
-        vm.upvotesOfMusic = function(music) {
+        vm.upvotesOfMusic = function (music) {
             var upvotes = 0;
-            angular.forEach(music.upvotes, function(upvote) {
+            angular.forEach(music.upvotes, function (upvote) {
                 upvotes += upvote.value;
             });
 
@@ -99,12 +114,33 @@
                 music.upvotes[firebase.auth().currentUser.uid].value = -1;
             }
 
+            music.upvotes[firebase.auth().currentUser.uid].updatedAt = +new Date();
+
             vm.musics.$save(music);
         };
 
-        vm.getLink = function(music) {
+        vm.getArt = function (music) {
+            if (tracks[music.$id] &&
+                tracks[music.$id].album &&
+                tracks[music.$id].album.images &&
+                tracks[music.$id].album.images.length > 0) {
+                return tracks[music.$id].album.images[0].url;
+            } else {
+                return "";
+            }
+        };
+
+        vm.getYoutubeLink = function (music) {
             var searchQuery = music.title.replace(/\s/g, "+");
             return "https://www.youtube.com/results?search_query=" + searchQuery;
+        };
+
+        vm.getSpotifyLink = function (music) {
+            if (tracks[music.$id] && tracks[music.$id].external_urls) {
+                return tracks[music.$id].external_urls.spotify;
+            } else {
+                return "";
+            }
         };
 
         vm.upvoteClass = function (music) {
@@ -132,7 +168,7 @@
             return classString;
         };
 
-        vm.isLoggedIn = function() {
+        vm.isLoggedIn = function () {
             return firebase.auth().currentUser !== null;
         };
 

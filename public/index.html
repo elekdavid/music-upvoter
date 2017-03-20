@@ -20,7 +20,7 @@
 
   <div ng-show="isAuthReady && isMusicsLoaded" ui-view="navbar" ng-cloak></div>
   <div ng-show="isAuthReady && isMusicsLoaded" layout="row" layout-align="center" ng-cloak>
-    <div ui-view="content" flex="95" flex-gt-md="85"></div>
+    <div ui-view="content" flex="95" flex-gt-md="90"></div>
   </div>
 
 
@@ -37,11 +37,15 @@
   <script src="bower_components/firebase/firebase.js"></script>
   <script src="bower_components/angularfire/dist/angularfire.js"></script>
 
+  <script src="bower_components/a0-angular-storage/dist/angular-storage.js"></script>
+
   <!-- Angular Firebase -->
 
   <!-- Project scripts -->
   <script src="app.module.js"></script>
   <script src="app.state.js"></script>
+  <script src="filters/music.filter.js"></script>
+  <script src="services/spotify.service.js"></script>
   <script src="views/home/home.controller.js"></script>
   <script src="views/home/home.state.js"></script>
   <script src="views/navbar/navbar.controller.js"></script>

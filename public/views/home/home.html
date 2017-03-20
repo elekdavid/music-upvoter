@@ -3,35 +3,107 @@
   Zeneszámok hozzáadásához vagy szavazáshoz jelentkezz be Facebookoddal.
 </p>
 
-<div layout="row">
-  <md-input-container flex="100">
-    <label>Zeneszám keresés{{vm.isLoggedIn() ?  " / hozzáadás" : ""}}</label>
-    <input type="text" ng-model="vm.musicTitle">
-  </md-input-container>
-</div>
+<div layout="row" layout-align="space-between" style="margin-top: 30px">
 
-<div layout="row" layout-align="center" ng-show="vm.isLoggedIn() && filtered.length === 0 && vm.musicTitle.length > 0">
-  <md-button class="md-primary md-raised" ng-click="vm.addNew()">Zeneszám hozzáadása</md-button>
-</div>
+  <md-card flex="45">
+    <md-card-content>
+      <h2>Összes szeletelnivaló</h2>
+      <div layout="column">
+        <div layout="row">
+          <md-input-container flex="100" style="margin-bottom: 0">
+            <label>Zeneszám keresés{{vm.isLoggedIn() ? " / hozzáadás" : ""}}</label>
+            <input type="text" ng-model="vm.musicTitle">
+          </md-input-container>
+        </div>
 
-<md-list>
-  <md-list-item class="md-1-line" ng-repeat="music in vm.musics | filter:vm.musicTitle | orderBy:title:true | orderBy:vm.upvotesOfMusic:true as filtered">
-    <div layout="column"
-         ng-class="vm.upvoteClass(music)">
-      <i class="material-icons upvote-arrow upvote-arrow-up"
-         ng-click="vm.upvote(music, 1)"
-         ng-class="{clickable: vm.isLoggedIn(), invisible: !vm.isLoggedIn()}">&#xE316;</i>
-      <h4 class="upvote-value">{{vm.upvotesOfMusic(music)}}</h4>
-      <i class="material-icons upvote-arrow upvote-arrow-down"
-         ng-click="vm.upvote(music, -1)"
-         ng-class="{clickable: vm.isLoggedIn(), invisible: !vm.isLoggedIn()}">&#xE313;</i>
+        <div layout="row" layout-align="center" ng-show="vm.isLoggedIn() && filtered.length === 0 && vm.musicTitle.length > 0">
+          <md-button class="md-primary md-raised" ng-click="vm.addNew()">Zeneszám hozzáadása</md-button>
+        </div>
+
+        <md-list>
+          <md-list-item class="md-1-line md-whiteframe-1dp all-list-element"
+                        ng-repeat="music in vm.musics | filter:vm.musicTitle | orderBy:title:true | orderBy:vm.upvotesOfMusic:true as filtered"
+                        ng-class-odd="'odd'">
+            <div layout="column"
+                 ng-class="vm.upvoteClass(music)">
+              <i class="material-icons upvote-arrow upvote-arrow-up"
+                 ng-click="vm.upvote(music, 1)"
+                 ng-class="{clickable: vm.isLoggedIn(), invisible: !vm.isLoggedIn()}">&#xE316;</i>
+              <h4 class="upvote-value">{{vm.upvotesOfMusic(music)}}</h4>
+              <i class="material-icons upvote-arrow upvote-arrow-down"
+                 ng-click="vm.upvote(music, -1)"
+                 ng-class="{clickable: vm.isLoggedIn(), invisible: !vm.isLoggedIn()}">&#xE313;</i>
+            </div>
+            <div layout="row" layout-align="center center">
+              <img ng-src="{{vm.getArt(music) || 'img/defaultArt.png'}}" class="md-avatar"/>
+            </div>
+            <div layout="column" layout-align="center center">
+              <i class="material-icons delete-icon clickable"
+                 ng-show="vm.isRemovable(music)"
+                 ng-click="vm.remove(music)">&#xE872;</i>
+            </div>
+            <div class="md-list-item-text" layout="column" layout-align="center center">
+              <h3>{{music.title}}</h3>
+            </div>
+            <div flex></div>
+            <div layout="row" layout-align="center center">
+              <a ng-show="vm.getSpotifyLink(music)" ng-href="{{vm.getSpotifyLink(music)}}" target="_blank"><img
+                      ng-src="img/spotify.png" class="md-avatar"/>
+              </a>
+              <a ng-href="{{vm.getYoutubeLink(music)}}" target="_blank"><img
+                      ng-src="img/youtube.png" class="md-avatar"/>
+              </a>
+            </div>
+          </md-list-item>
+        </md-list>
+      </div>
+    </md-card-content>
+  </md-card>
+
+  <div layout="column" flex="45">
+    <div layout="row">
+      <md-card flex="100">
+        <md-card-content>
+          <h2>Amiket még nem véleményeztél</h2>
+          <md-list>
+            <md-list-item class="md-1-line md-whiteframe-1dp not-rated-list-element"
+                          ng-repeat="music in vm.musics | filterNotUpvoted | limitTo:3"
+                          ng-class-odd="'odd'"
+                          layout="row"
+                          layout-align="start none">
+              <div layout="column"
+                   ng-class="vm.upvoteClass(music)">
+                <i class="material-icons upvote-arrow upvote-arrow-up"
+                   ng-click="vm.upvote(music, 1)"
+                   ng-class="{clickable: vm.isLoggedIn(), invisible: !vm.isLoggedIn()}">&#xE316;</i>
+                <h4 class="upvote-value">{{vm.upvotesOfMusic(music)}}</h4>
+                <i class="material-icons upvote-arrow upvote-arrow-down"
+                   ng-click="vm.upvote(music, -1)"
+                   ng-class="{clickable: vm.isLoggedIn(), invisible: !vm.isLoggedIn()}">&#xE313;</i>
+              </div>
+              <div layout="row" layout-align="center center">
+                <img ng-src="{{vm.getArt(music) || 'img/defaultArt.png'}}" class="md-avatar"/>
+              </div>
+              <div class="md-list-item-text" layout="column" layout-align="center center">
+                <h3>{{music.title}}</h3>
+              </div>
+              <div flex></div>
+              <div layout="row" layout-align="center center">
+                <a ng-show="vm.getSpotifyLink(music)" ng-href="{{vm.getSpotifyLink(music)}}" target="_blank"><img
+                        ng-src="img/spotify.png" class="md-avatar"/>
+                </a>
+                <a ng-href="{{vm.getYoutubeLink(music)}}" target="_blank"><img
+                        ng-src="img/youtube.png" class="md-avatar"/>
+                </a>
+              </div>
+              <div layout="column" layout-align="start start">
+                <i class="material-icons close-icon clickable"
+                   ng-click="vm.upvote(music, 0)">&#xE5CD;</i>
+              </div>
+            </md-list-item>
+          </md-list>
+        </md-card-content>
+      </md-card>
     </div>
-    <i class="material-icons delete-icon"
-       ng-click="vm.remove(music)"
-       ng-class="{clickable: vm.isLoggedIn(), invisible: !vm.isRemovable(music)}">&#xE872;</i>
-    <a ng-href="{{vm.getLink(music)}}" target="_blank"><img ng-src="https://cdn1.iconfinder.com/data/icons/google_jfk_icons_by_carlosjj/512/music.png" class="md-avatar" /></a>
-    <div class="md-list-item-text">
-      <h3>{{music.title}}</h3>
-    </div>
-  </md-list-item>
-</md-list>
+  </div>
+</div>

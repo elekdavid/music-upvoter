@@ -6,6 +6,7 @@
             'firebase',
             'ngAria',
             'ui.router',
-            'ngMaterial'
+            'ngMaterial',
+            'angular-storage'
         ]);
 })();
