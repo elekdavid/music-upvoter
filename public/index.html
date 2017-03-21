@@ -2,7 +2,8 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Szeletelő szavazó</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
+	<title>Szeletelő szavazó</title>
 
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -20,7 +21,7 @@
 
   <div ng-show="isAuthReady && isMusicsLoaded" ui-view="navbar" ng-cloak></div>
   <div ng-show="isAuthReady && isMusicsLoaded" layout="row" layout-align="center" ng-cloak>
-    <div ui-view="content" flex="95" flex-gt-md="90"></div>
+    <div ui-view="content" flex="95"></div>
   </div>
 
 
