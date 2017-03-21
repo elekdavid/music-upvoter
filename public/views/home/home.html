@@ -94,7 +94,7 @@
           <h2>Amiket még nem véleményeztél</h2>
           <md-list>
             <md-list-item class="md-1-line md-whiteframe-1dp not-rated-list-element"
-                          ng-repeat="music in vm.musics | filterNotUpvoted | limitTo:3"
+                          ng-repeat="music in vm.musics | orderBy:vm.upvotesOfMusic:true | filterNotUpvoted | limitTo:3"
                           ng-class-odd="'odd'"
                           layout="row"
                           layout-align="start none"
