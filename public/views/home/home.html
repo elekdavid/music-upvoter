@@ -1,11 +1,6 @@
-<p ng-show="!vm.isLoggedIn()">
-  <i class="material-icons">&#xE88E;</i>
-  Zeneszámok hozzáadásához vagy szavazáshoz jelentkezz be Facebookoddal.
-</p>
-
 <div layout="column" layout-gt-md="row" layout-align="space-between" style="margin-top: 30px">
 
-  <md-card flex-gt-md="50" flex-order="2" flex-order-gt-md="1">
+  <md-card>
     <md-card-content>
       <h2>Összes szeletelnivaló</h2>
       <div layout="column">
@@ -86,75 +81,4 @@
       </div>
     </md-card-content>
   </md-card>
-
-  <div layout="column" flex-gt-md="45" flex-order="1" flex-order-gt-md="2">
-    <div layout="row">
-      <md-card flex="100">
-        <md-card-content>
-          <h2>Amiket még nem véleményeztél</h2>
-          <md-list>
-            <md-list-item class="md-1-line md-whiteframe-1dp not-rated-list-element"
-                          ng-repeat="music in vm.musics | orderBy:vm.upvotesOfMusic:true | filterNotUpvoted | limitTo:3"
-                          ng-class-odd="'odd'"
-                          layout="row"
-                          layout-align="start none"
-                          layout-wrap>
-              <div layout="column"
-                   ng-class="vm.upvoteClass(music)"
-                   layout-align="center center"
-                   flex="15"
-                   flex-gt-md="10"
-                   flex-order="1">
-                <i class="material-icons upvote-arrow upvote-arrow-up"
-                   ng-click="vm.upvote(music, 1)"
-                   ng-class="{clickable: vm.isLoggedIn(), invisible: !vm.isLoggedIn()}">&#xE316;</i>
-                <h4 class="upvote-value">{{vm.upvotesOfMusic(music)}}</h4>
-                <i class="material-icons upvote-arrow upvote-arrow-down"
-                   ng-click="vm.upvote(music, -1)"
-                   ng-class="{clickable: vm.isLoggedIn(), invisible: !vm.isLoggedIn()}">&#xE313;</i>
-              </div>
-              <div layout="row"
-                   flex="20"
-                   flex-gt-md="10"
-                   layout-align="center center"
-                   flex-order="2">
-                <img ng-src="{{vm.getArt(music) || 'img/defaultArt.png'}}" class="md-avatar" style="margin: 0"/>
-              </div>
-              <div class="md-list-item-text"
-                   flex="55"
-                   flex-gt-md="50"
-                   layout="column"
-                   layout-align="center start"
-                   flex-order="3">
-                <h3 hide-xs hide-sm hide-md>{{music.title}}</h3>
-                <h4 hide-gt-md>{{music.title}}</h4>
-              </div>
-              <div layout="row"
-                   flex="100"
-                   flex-gt-md="20"
-                   flex-offset-gt-md="5"
-                   layout-align="end center"
-                   flex-order="5"
-                   flex-order-gt-md="4">
-                <a ng-show="vm.getSpotifyLink(music)" ng-href="{{vm.getSpotifyLink(music)}}" target="_blank"><img
-                        ng-src="img/spotify.png" class="md-avatar"/>
-                </a>
-                <a ng-href="{{vm.getYoutubeLink(music)}}" target="_blank"><img
-                        ng-src="img/youtube.png" class="md-avatar"/>
-                </a>
-              </div>
-              <div layout="column"
-                   flex-gt-md="5"
-                   layout-align="start start"
-                   flex-order="4"
-                   flex-order-gt-md="6">
-                <i class="material-icons close-icon clickable"
-                   ng-click="vm.upvote(music, 0)">&#xE5CD;</i>
-              </div>
-            </md-list-item>
-          </md-list>
-        </md-card-content>
-      </md-card>
-    </div>
-  </div>
 </div>

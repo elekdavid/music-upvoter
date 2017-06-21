@@ -11,11 +11,7 @@
         var vm = this;
 
         function init() {
-            $scope.$parent.isAuthReady = false;
-            firebase.auth().onAuthStateChanged(function(){
-                $scope.$parent.isAuthReady = true;
-                $scope.$apply();
-            })
+            $scope.$parent.isAuthReady = true;
         }
 
         vm.currentUser = function () {

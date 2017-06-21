@@ -5,9 +5,9 @@
         .module('musicUpvoterApp')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$scope', '$firebaseArray', "$mdDialog", "$timeout", "SpotifyService"];
+    HomeController.$inject = ['$scope', '$firebaseArray', "$mdDialog", "SpotifyService"];
 
-    function HomeController($scope, $firebaseArray, $mdDialog, $timeout, SpotifyService) {
+    function HomeController($scope, $firebaseArray, $mdDialog, SpotifyService) {
         var vm = this;
         var ref;
 
@@ -20,11 +20,6 @@
             vm.musics = $firebaseArray(ref);
             vm.musics.$loaded().then(function () {
                 $scope.$parent.isMusicsLoaded = true;
-                angular.forEach(vm.musics, function (music) {
-                    SpotifyService.findTrack(music.title).then(function (track) {
-                        tracks[music.$id] = track;
-                    });
-                });
             });
         }
 
